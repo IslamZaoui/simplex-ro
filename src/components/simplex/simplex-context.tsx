@@ -11,10 +11,10 @@ type SimplexContextType = {
 	setNumCon: (numCon: number) => void;
 	objective: "Max" | "Min";
 	setObjective: (objective: "Max" | "Min") => void;
-	constraints: Matrix<number>;
-	setConstraints: (constraints: Matrix<number>) => void;
-	objectiveFunction: Array<number>;
-	setObjectiveFunction: (objectiveFunction: Array<number>) => void;
+	constraints: Matrix<string>;
+	setConstraints: (constraints: Matrix<string>) => void;
+	objectiveFunction: Array<string>;
+	setObjectiveFunction: (objectiveFunction: Array<string>) => void;
 };
 
 const SimplexContext = createContext<SimplexContextType>({
@@ -37,8 +37,8 @@ export function SimplexProvider({ children }: { children: React.ReactNode }) {
 	const [numVar, setNumVar] = useState(3);
 	const [numCon, setNumCon] = useState(2);
 	const [objective, setObjective] = useState<"Max" | "Min">("Max");
-	const [constraints, setConstraints] = useState<Matrix<number>>([]);
-	const [objectiveFunction, setObjectiveFunction] = useState<Array<number>>([]);
+	const [constraints, setConstraints] = useState<Matrix<string>>([]);
+	const [objectiveFunction, setObjectiveFunction] = useState<Array<string>>([]);
 
 	useEffect(() => {
 		setObjectiveFunction(new Array(numVar).fill(0));

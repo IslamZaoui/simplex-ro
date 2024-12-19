@@ -29,21 +29,15 @@ function SetValues() {
 	const context = useContext(SimplexContext);
 
 	function handleObjectiveFunctionChange(value: string, index: number) {
-		const parsedValue = parseFloat(value);
-		if (!isNaN(parsedValue)) {
-			const newValue = [...context.objectiveFunction];
-			newValue[index] = parsedValue;
-			context.setObjectiveFunction(newValue);
-		}
+		const newValue = [...context.objectiveFunction];
+		newValue[index] = value;
+		context.setObjectiveFunction(newValue);
 	}
 
 	function handleConstraintChange(value: string, conIndex: number, varIndex: number) {
-		const parsedValue = parseFloat(value);
-		if (!isNaN(parsedValue)) {
-			const newConstraints = [...context.constraints];
-			newConstraints[conIndex][varIndex] = parsedValue;
-			context.setConstraints(newConstraints);
-		}
+		const newConstraints = [...context.constraints];
+		newConstraints[conIndex][varIndex] = value;
+		context.setConstraints(newConstraints);
 	}
 
 	return (
@@ -53,10 +47,10 @@ function SetValues() {
 					<CardTitle>Simplex Values</CardTitle>
 					<CardDescription>Enter simplex values</CardDescription>
 				</CardHeader>
-				<CardContent className="flex flex-col gap-3">
+				<CardContent className="flex flex-col gap-3 overflow-y-auto">
 					<div className="flex items-center gap-2">
 						<Select value={context.objective} onValueChange={context.setObjective}>
-							<SelectTrigger>
+							<SelectTrigger className="w-[100px]">
 								<SelectValue placeholder="Objective" />
 							</SelectTrigger>
 							<SelectContent>
@@ -68,6 +62,7 @@ function SetValues() {
 						{context.objectiveFunction?.map((value, index) => (
 							<React.Fragment key={index}>
 								<Input
+									className="w-[60px]"
 									type="number"
 									value={value ?? ""}
 									onChange={(e) =>
@@ -88,6 +83,7 @@ function SetValues() {
 								{constraint?.slice(0, -1).map((value, varIndex) => (
 									<React.Fragment key={varIndex}>
 										<Input
+											className="w-[60px]"
 											type="number"
 											value={value ?? ""}
 											onChange={(e) =>
@@ -109,6 +105,7 @@ function SetValues() {
 									math={context.objective === "Min" ? "\\geq" : "\\leq"}
 								/>
 								<Input
+									className="w-[60px]"
 									type="number"
 									value={constraint?.[constraint.length - 1] ?? ""}
 									onChange={(e) =>

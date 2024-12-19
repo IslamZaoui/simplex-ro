@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						<p className="mb-2 text-sm sm:mb-0">
 							© {new Date().getFullYear()} Simplex Solver. All rights reserved.
 						</p>
-						<div className="flex items-center space-x-4">
+						<div className="flex flex-col items-center gap-2 md:flex-row">
 							<p className="text-sm">
 								Powered by{" "}
 								<a

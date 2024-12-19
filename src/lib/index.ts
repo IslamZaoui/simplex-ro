@@ -2,8 +2,8 @@ import { Simplex } from "./simplex";
 
 export function simplexToUrl(
 	objective: "Max" | "Min",
-	objectiveFunction: Array<number>,
-	constrains: Matrix<number>
+	objectiveFunction: Array<string>,
+	constrains: Matrix<string>
 ): string {
 	const objectiveFunctionStr = objectiveFunction.join(",");
 	const constrainsStr = constrains.map((row) => row.join(",")).join(";");
