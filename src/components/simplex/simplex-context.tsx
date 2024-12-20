@@ -41,14 +41,16 @@ export function SimplexProvider({ children }: { children: React.ReactNode }) {
 	const [objectiveFunction, setObjectiveFunction] = useState<Array<string>>([]);
 
 	useEffect(() => {
-		setObjectiveFunction(new Array(numVar).fill(0));
+		if (!isNaN(numVar)) setObjectiveFunction(new Array(numVar).fill(0));
 	}, [numVar]);
 
 	useEffect(() => {
-		const newConstraints = Array(numCon)
-			.fill(0)
-			.map(() => Array(numVar + 1).fill(0));
-		setConstraints(newConstraints);
+		if (!isNaN(numCon) && !isNaN(numVar)) {
+			const newConstraints = Array(numCon)
+				.fill(0)
+				.map(() => Array(numVar + 1).fill(0));
+			setConstraints(newConstraints);
+		}
 	}, [numVar, numCon]);
 
 	useEffect(() => {

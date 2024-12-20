@@ -50,8 +50,10 @@ function SetValues() {
 					<CardTitle>Simplex Values</CardTitle>
 					<CardDescription>Enter simplex values</CardDescription>
 				</CardHeader>
-				<CardContent ref={scrollAreaParent} className="flex flex-col gap-3 overflow-y-auto">
-					<ScrollArea className={`w-[${scrollAreaParent.current?.offsetWidth}px]`}>
+				<CardContent ref={scrollAreaParent}>
+					<ScrollArea
+						className={`flex flex-col w-[${scrollAreaParent.current?.offsetWidth}px]`}
+					>
 						<div className="flex items-center gap-2">
 							<Select value={context.objective} onValueChange={context.setObjective}>
 								<SelectTrigger className="w-[100px]">
@@ -81,7 +83,7 @@ function SetValues() {
 								</React.Fragment>
 							))}
 						</div>
-						<div className="ml-[75px] flex flex-col gap-2">
+						<div className="ml-[75px] mt-2 flex flex-col gap-2">
 							{context.constraints?.map((constraint, constraintIndex) => (
 								<div className="flex items-center gap-2" key={constraintIndex}>
 									{constraint?.slice(0, -1).map((value, varIndex) => (
@@ -123,7 +125,9 @@ function SetValues() {
 								</div>
 							))}
 						</div>
-						<ScrollBar className="mt-2" orientation="horizontal" />
+						<div className="h-4">
+							<ScrollBar orientation="horizontal" />
+						</div>
 					</ScrollArea>
 				</CardContent>
 				<CardFooter className="flex justify-end gap-4">

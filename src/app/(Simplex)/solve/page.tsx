@@ -13,6 +13,7 @@ import IterationTable from "@/components/simplex/iteration-table";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import ShareButton from "@/components/custom/share-button";
+import { SimplexDisplay } from "@/components/simplex/simplex-display";
 
 interface PageProps {
 	searchParams: Promise<{
@@ -36,6 +37,8 @@ export default async function Solve({ searchParams }: PageProps) {
 				<CardDescription>Step-by-step solution tables</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-col gap-4">
+				<SimplexDisplay simplex={simplex} />
+
 				{iterations.map((iteration, index) => (
 					<IterationTable
 						key={index}
