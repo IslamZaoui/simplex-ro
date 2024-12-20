@@ -1,3 +1,5 @@
+"use server";
+
 import { paramsToSimplex } from "@/lib";
 import {
 	Card,
