@@ -10,13 +10,6 @@ import {
 	CardContent,
 	CardFooter
 } from "@/components/ui/card";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useContext, useRef } from "react";
@@ -55,16 +48,7 @@ function SetValues() {
 						className={`flex flex-col w-[${scrollAreaParent.current?.offsetWidth}px]`}
 					>
 						<div className="flex items-center gap-2">
-							<Select value={context.objective} onValueChange={context.setObjective}>
-								<SelectTrigger className="w-[100px]">
-									<SelectValue placeholder="Objective" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="Max">Max</SelectItem>
-									<SelectItem value="Min">Min</SelectItem>
-								</SelectContent>
-							</Select>
-							<InlineMath math={`\\Z =`} />
+							<InlineMath math={`\\text{Max Z} =`} />
 							{context.objectiveFunction?.map((value, index) => (
 								<React.Fragment key={index}>
 									<Input
@@ -83,7 +67,7 @@ function SetValues() {
 								</React.Fragment>
 							))}
 						</div>
-						<div className="ml-[75px] mt-2 flex flex-col gap-2">
+						<div className="ml-[80px] mt-2 flex flex-col gap-2">
 							{context.constraints?.map((constraint, constraintIndex) => (
 								<div className="flex items-center gap-2" key={constraintIndex}>
 									{constraint?.slice(0, -1).map((value, varIndex) => (
@@ -107,9 +91,7 @@ function SetValues() {
 											)}
 										</React.Fragment>
 									))}
-									<InlineMath
-										math={context.objective === "Min" ? "\\geq" : "\\leq"}
-									/>
+									<InlineMath math={"\\leq"} />
 									<Input
 										className="w-[60px]"
 										type="number"
@@ -135,11 +117,7 @@ function SetValues() {
 						Go Back
 					</Button>
 					<Link
-						href={simplexToUrl(
-							context.objective,
-							context.objectiveFunction,
-							context.constraints
-						)}
+						href={simplexToUrl(context.objectiveFunction, context.constraints)}
 						className={`w-32 ${buttonVariants()}`}
 					>
 						Solve

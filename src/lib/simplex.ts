@@ -12,26 +12,15 @@ declare global {
 	};
 }
 
-function transpose<T>(matrix: Matrix<T>): Matrix<T> {
-	if (matrix.length === 0) return [];
-	return matrix[0].map((_, colIndex) => matrix.map((row) => row[colIndex]));
-}
-
 export class Simplex {
 	objectiveFunction: Array<number> = [];
 	constraints: Matrix<number> = [];
-	objective: "Max" | "Min" = "Max";
 
 	tableau: Matrix<number>;
 	basis: Array<number>;
 	iteration: number = 0;
 
-	constructor(
-		objective: "Max" | "Min",
-		objectiveFunction: Array<number>,
-		constraints: Matrix<number>
-	) {
-		this.objective = objective;
+	constructor(objectiveFunction: Array<number>, constraints: Matrix<number>) {
 		this.objectiveFunction = objectiveFunction;
 		this.constraints = constraints;
 		this.tableau = [];
@@ -39,44 +28,24 @@ export class Simplex {
 	}
 
 	prepare(): void {
-		if (this.objective === "Min") {
-			const augmentedObjective = [...this.objectiveFunction, 1];
-			const fullMatrix: Matrix<number> = [...this.constraints, augmentedObjective];
-			const transposed = transpose<number>(fullMatrix);
-			this.constraints = transposed.slice(0, -1);
-			this.objectiveFunction = [...transposed[transposed.length - 1].slice(0, -1)];
-		}
-
 		const m = this.constraints.length;
 		const n = this.objectiveFunction.length;
 
-		this.tableau = Array.from({ length: m + 1 }, () =>
-			Array(n + m + (this.objective === "Min" ? 2 : 1)).fill(0)
-		);
+		this.tableau = Array.from({ length: m + 1 }, () => Array(n + m + 1).fill(0));
 
 		for (let i = 0; i < m; i++) {
 			for (let j = 0; j < n; j++) {
 				this.tableau[i][j] = this.constraints[i][j];
 			}
 			this.tableau[i][n + i] = 1;
-			if (this.objective === "Min") {
-				this.tableau[i][n + m] = 0;
-				this.tableau[i][n + m + 1] = this.constraints[i][n];
-			} else {
-				this.tableau[i][n + m] = this.constraints[i][n];
-			}
+			this.tableau[i][n + m] = this.constraints[i][n];
 		}
 
 		for (let j = 0; j < n; j++) {
 			this.tableau[m][j] = -this.objectiveFunction[j];
 		}
-		if (this.objective === "Min") {
-			this.tableau[m][n + m] = 1;
-		}
 
 		this.basis = Array.from({ length: m }, (_, i) => n + i);
-
-		this.objective = "Max";
 	}
 
 	*solve(): Generator<SimplexIteration, number, unknown> {
@@ -87,9 +56,8 @@ export class Simplex {
 		this.prepare();
 
 		while (true) {
-			// Find entering variable - exclude the artificial variable column for minimization
-			const endIndex =
-				this.objective === "Min" ? this.tableau[0].length - 2 : this.tableau[0].length - 1;
+			// Find entering variable
+			const endIndex = this.tableau[0].length - 1;
 			const enteringCol = this.tableau[this.tableau.length - 1]
 				.slice(0, endIndex)
 				.reduce((iMin, x, i, arr) => (x < arr[iMin] ? i : iMin), 0);

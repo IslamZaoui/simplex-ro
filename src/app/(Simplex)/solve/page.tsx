@@ -24,9 +24,9 @@ interface PageProps {
 }
 
 export default async function Solve({ searchParams }: PageProps) {
-	const { objective, objectiveFunction, constrains } = await searchParams;
+	const { objectiveFunction, constrains } = await searchParams;
 
-	const [simplex, numVar, numCon] = paramsToSimplex(objective, objectiveFunction, constrains);
+	const [simplex, numVar, numCon] = paramsToSimplex(objectiveFunction, constrains);
 	const iterations = [...simplex.solve()];
 	const solution = simplex.getSolution();
 
